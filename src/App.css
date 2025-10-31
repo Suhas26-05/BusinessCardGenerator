@@ -1,38 +1,102 @@
-.App {
-  text-align: center;
+/* --- NEW STYLES FOR SIDE-BY-SIDE LAYOUT --- */
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin: 50px auto;
+  width: fit-content;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* --- FORM STYLING FOR BETTER PRESENTATION --- */
+.card-form {
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  margin: 0;
+  width: 300px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.card-form input,
+.card-form button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.card-form button {
+  background-color: #3399ff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s;
+}
+
+.card-form button:hover {
+  background-color: #004d99;
+}
+
+/* --- EXISTING BUSINESS CARD STYLES --- */
+.business-card {
+  width: 450px;
+  padding: 30px;
+  border-radius: 20px;
+  color: white;
+  background: linear-gradient(135deg, #004d99 0%, #3399ff 100%);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  /* MODIFICATION: Remove 'margin: 50px auto;' because it's now controlled by .app-container */
+  margin: 0;
+}
+
+.name {
+  font-size: 2.5em;
+  margin-bottom: 0.1em;
+}
+
+.title {
+  font-size: 1.1em;
+  font-weight: 400;
+  margin-top: 0;
+}
+
+.dotted-rule {
+  border: none;
+  border-top: 3px dotted rgba(255, 255, 255, 0.5);
+  margin: 20px 0;
+}
+
+.bottom-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.contact-info {
+  line-height: 1.4;
+}
+
+.contact-info p {
+  margin: 4px 0;
+}
+
+.skills-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 5px;
 }
 
-.App-link {
-  color: #61dafb;
+.skill-row {
+  display: flex;
+  gap: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.skill-tag {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8em;
 }
