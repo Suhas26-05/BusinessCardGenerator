@@ -1,6 +1,13 @@
 import { useState } from "react";
 
 function Card() {
+  let [customize, setCustomize] = useState({
+    gradient1: "#004d99",
+    gradient2: "#3399ff",
+    gradient3: "#ffffff",
+    color: "black",
+    radius: "0px",
+  });
   let [data, setData] = useState({
     name: "Suhas",
     role: "Software Developer",
@@ -20,9 +27,19 @@ function Card() {
     });
     console.log(name + " " + value);
   }
+  function SetGradient(event) {
+    let name = event.target.name;
+    let value = event.target.value;
+    setCustomize((prev) => {
+      return { ...prev, [name]: value };
+    });
+  }
   return (
     <div className="app-container">
       <form className="card-form">
+        <label>Enter Your Details:</label>
+        <br />
+        <label>Name and Role:</label>
         <input
           type="text"
           name="name"
@@ -40,6 +57,7 @@ function Card() {
           onChange={handleChanges}
         />
         <br />
+        <label>Contact Information:</label>
         <input
           type="email"
           name="email"
@@ -65,6 +83,7 @@ function Card() {
           onChange={handleChanges}
         />
         <br />
+        <label>Skills:</label>
         <input
           type="text"
           name="skill1"
@@ -97,11 +116,55 @@ function Card() {
           value={data.skill4}
           onChange={handleChanges}
         />
-        <input type="color" name="color" id="color" onChange={handleChanges} />
         <br />
+        <label>Choose Gradient Colors:</label>
+        <input
+          type="color"
+          name="gradient1"
+          onChange={SetGradient}
+          value={customize.gradient1}
+        />
+        <input
+          type="color"
+          name="gradient2"
+          onChange={SetGradient}
+          value={customize.gradient2}
+        />
+        <input
+          type="color"
+          name="gradient3"
+          onChange={SetGradient}
+          value={customize.gradient3}
+        />
+        <br />
+        <label>Choose Text Color:</label>
+        <input
+          type="color"
+          name="color"
+          id="color"
+          onChange={SetGradient}
+          value={customize.color}
+        />
+        <input
+          type="range"
+          name="radius"
+          min={0}
+          max={150}
+          id="radius"
+          placeholder="Border Radius"
+          onChange={SetGradient}
+          value={customize.radius}
+        />
         <button type="submit">Save</button>
       </form>
-      <div className="business-card">
+      <div
+        className="business-card"
+        style={{
+          background: `linear-gradient(135deg, ${customize.gradient1} 0%, ${customize.gradient2} 50%, ${customize.gradient3} 100%)`,
+          color: customize.color,
+          borderRadius: customize.radius + "px" ,
+        }}
+      >
         <header>
           <h1 className="name">{data.name}</h1>
           <p className="title">{data.role}</p>

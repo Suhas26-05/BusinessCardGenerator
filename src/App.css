@@ -1,4 +1,3 @@
-/* --- NEW STYLES FOR SIDE-BY-SIDE LAYOUT --- */
 .app-container {
   display: flex;
   justify-content: center;
@@ -17,10 +16,16 @@
   width: 300px;
 }
 
+.card-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
 .card-form input,
 .card-form button {
   display: block;
-  width: 100%;
+  width: 90%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -45,11 +50,6 @@
   width: 450px;
   padding: 30px;
   border-radius: 20px;
-  color: white;
-  background: linear-gradient(135deg, #004d99 0%, #3399ff 100%);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  /* MODIFICATION: Remove 'margin: 50px auto;' because it's now controlled by .app-container */
-  margin: 0;
 }
 
 .name {
