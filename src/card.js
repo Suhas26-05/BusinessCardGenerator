@@ -36,7 +36,11 @@ function Card() {
   }
   return (
     <div className="app-container">
-      <form className="card-form">
+      <form
+        className="card-form"
+        action="http://localhost:5000/user/save"
+        method="POST"
+      >
         <label>Enter Your Details:</label>
         <br />
         <label>Name and Role:</label>
@@ -149,7 +153,7 @@ function Card() {
           type="range"
           name="radius"
           min={0}
-          max={150}
+          max={360}
           id="radius"
           placeholder="Border Radius"
           onChange={SetGradient}
@@ -162,7 +166,7 @@ function Card() {
         style={{
           background: `linear-gradient(135deg, ${customize.gradient1} 0%, ${customize.gradient2} 50%, ${customize.gradient3} 100%)`,
           color: customize.color,
-          borderRadius: customize.radius + "px" ,
+          borderRadius: customize.radius + "px",
         }}
       >
         <header>
