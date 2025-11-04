@@ -1,27 +1,30 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 const app = express();
+
+// Middleware
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true }));
 
-// Start the server
-app.listen(5000, () => {
-  console.log("Server is running on port 'http://localhost:5000'");
-});
-
-// MongoDB connection
 mongoose
   .connect(
     "mongodb+srv://suhaskodakandla464_db_user:mF7xFv6liYHH0m01@practice.xxyhm96.mongodb.net/?appName=Practice"
   )
-  .then(() => console.log("Connected to MongoDB"));
-
-const UserSchema = new mongoose.Schema(
+  .then(console.log("Connected to Dev database"));
+const formDataSchema = new mongoose.Schema(
   {
-    // Personal Information
-    name: {
+    // Owner of this card (username from simple auth)
+    owner: {
+      type: String,
+      trim: true,
+    },
+    fullname: {
       type: String,
       required: true,
-      trim: true, // Removes whitespace from both ends of a string
+      trim: true,
     },
     role: {
       type: String,
@@ -31,11 +34,11 @@ const UserSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true, // Ensures no two users share the same email
-      lowercase: true, // Converts email to lowercase before saving
+      unique: true,
       trim: true,
+      lowercase: true,
     },
-    phone: {
+    phNo: {
       type: String,
       trim: true,
     },
@@ -44,40 +47,149 @@ const UserSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // Skills (grouped into an array for better structure)
-    skill1: { type: String, default: [] },
-    skill2: { type: String, default: [] },
-    skill3: { type: String, default: [] },
-    skill4: { type: String, default: [] },
-
-    // Design/UI Elements
-    gradient1: { type: String, default: [] },
-    gradient2: { type: String, default: [] },
-    gradient3: { type: String, default: [] },
-    color: {
+    // --- Individual Skill Fields (Matches Form Input) ---
+    skill1: {
       type: String,
       trim: true,
     },
-    radius: {
+    skill2: {
       type: String,
-      trim: true, // Assuming radius is stored as a string like '75' or '50px'
+      trim: true,
+    },
+    skill3: {
+      type: String,
+      trim: true,
+    },
+    skill4: {
+      type: String,
+      trim: true,
+    },
+
+    // --- Customization/Design Properties ---
+    gradient1: {
+      type: String, // Stores hex code (e.g., '#000000')
+      trim: true,
+    },
+    gradient2: {
+      type: String, // Stores hex code
+      trim: true,
+    },
+    color: {
+      type: String, // Stores hex code
+      trim: true,
+    },
+    radius: {
+      type: String, // Stores the value as a number (e.g., 75)
+      trim: true,
     },
   },
   {
-    // Schema Options
-    timestamps: true, // Adds `createdAt` and `updatedAt` fields
+    // Adds 'createdAt' and 'updatedAt' fields automatically
+    timestamps: true,
   }
 );
 
-const User = mongoose.model("User", UserSchema);
+const formModel = mongoose.model("businessCard", formDataSchema);
 
-// Save form submission
-app.post("/user/save", (req, res) => {
-  async function saveUserData() {
-    const newUser = new User(req.body);
-    const saveUser = await newUser.save();
-    console.log("User data saved:" + saveUser);
+// Simple user schema (stores username and plain password as requested)
+const userSchema = new mongoose.Schema(
+  {
+    username: { type: String, required: true, unique: true, trim: true },
+    password: { type: String, required: true },
+  },
+  { timestamps: true }
+);
+
+const User = mongoose.model("User", userSchema);
+
+app.post("/user/save", async (req, res) => {
+  try {
+    console.log("Received data:", req.body);
+    const newUser = new formModel(req.body);
+    const savedUser = await newUser.save();
+    console.log("Data saved:", savedUser);
+    res.status(201).json({
+      message: "Data saved successfully",
+      user: savedUser,
+    });
+  } catch (error) {
+    console.error("Error saving data:", error);
+    res.status(500).json({
+      message: "Error saving data",
+      error: error.message,
+    });
   }
-  saveUserData();
-  res.send("User data saved");
 });
+
+// Register a new user (stores plain password per request — insecure in production)
+app.post("/auth/register", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: "username and password required" });
+    }
+    const exists = await User.findOne({ username });
+    if (exists) {
+      return res.status(409).json({ message: "username already exists" });
+    }
+    const newUser = new User({ username, password });
+    await newUser.save();
+    return res.status(201).json({ message: "User registered" });
+  } catch (error) {
+    console.error("Error registering user:", error);
+    return res
+      .status(500)
+      .json({ message: "Error registering user", error: error.message });
+  }
+});
+
+// Simple login (no tokens) — returns success if username/password match
+app.post("/auth/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: "username and password required" });
+    }
+    const user = await User.findOne({ username, password });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    return res
+      .status(200)
+      .json({ message: "Login successful", user: { username: user.username } });
+  } catch (error) {
+    console.error("Error during login:", error);
+    return res
+      .status(500)
+      .json({ message: "Error during login", error: error.message });
+  }
+});
+
+// Endpoint to fetch all business cards (optionally filtered by username)
+app.get("/user/cards", async (req, res) => {
+  try {
+    // If username query param is provided, return only that user's cards
+    const username = req.query.username;
+    const filter = {};
+    if (username) filter.owner = username;
+    const cards = await formModel.find(filter).sort({ createdAt: -1 });
+    console.log(`Fetched ${cards.length} cards for`, username || "all users");
+    res
+      .status(200)
+      .json({ message: "Cards fetched successfully", cards: cards });
+  } catch (error) {
+    console.error("Error fetching cards:", error);
+    res
+      .status(500)
+      .json({ message: "Error fetching cards", error: error.message });
+  }
+});
+
+app.listen(5000, () => {
+  console.log("Server is running on 'http://localhost:5000'");
+});
+

@@ -1,0 +1,87 @@
+div[style*="maxWidth: 400"] {
+  max-width: 400px;
+  margin: 80px auto;
+  background-color: #fff;
+  padding: 30px;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Form header */
+div[style*="maxWidth: 400"] h3 {
+  text-align: center;
+  color: #007bff;
+  font-size: 1.6em;
+  margin-bottom: 20px;
+}
+
+/* Input fields */
+div[style*="maxWidth: 400"] input[type="text"],
+div[style*="maxWidth: 400"] input[type="password"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+}
+
+div[style*="maxWidth: 400"] input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+/* Buttons (Register & Login) */
+div[style*="display: flex"][style*="gap: 8"] button {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 1em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Register button */
+div[style*="display: flex"][style*="gap: 8"] button:first-child {
+  background-color: #28a745;
+  color: white;
+}
+
+div[style*="display: flex"][style*="gap: 8"] button:first-child:hover {
+  background-color: #218838;
+}
+
+/* Login button */
+div[style*="display: flex"][style*="gap: 8"] button:last-child {
+  background-color: #007bff;
+  color: white;
+}
+
+div[style*="display: flex"][style*="gap: 8"] button:last-child:hover {
+  background-color: #0069d9;
+}
+
+/* Feedback message (authMessage) */
+div[style*="maxWidth: 400"] p {
+  margin-top: 12px;
+  font-size: 0.95em;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  div[style*="maxWidth: 400"] {
+    margin: 40px 20px;
+    padding: 20px;
+  }
+
+  div[style*="maxWidth: 400"] h3 {
+    font-size: 1.4em;
+  }
+}

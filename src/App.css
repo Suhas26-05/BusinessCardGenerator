@@ -1,102 +1,220 @@
-.app-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 40px;
-  margin: 50px auto;
-  width: fit-content;
+/* App.css - layout + navigation + global styles */
+
+/* Reset-ish */
+* {
+  box-sizing: border-box;
 }
 
-/* --- FORM STYLING FOR BETTER PRESENTATION --- */
-.card-form {
-  padding: 30px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+/* Page background & base font */
+html,
+body {
+  height: 100%;
   margin: 0;
-  width: 300px;
+  font-family: "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  background-color: #f5f8fb;
+  color: #222;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.card-form label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  display: block;
+/* Header / Nav */
+header {
+  background-color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 1px 0 rgba(16, 24, 40, 0.04);
 }
 
-.card-form input,
-.card-form button {
-  display: block;
-  width: 90%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+header nav {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: flex-start;
 }
 
-.card-form button {
-  background-color: #3399ff;
-  color: white;
+/* Link styles */
+header a,
+header a:visited {
+  color: #0666d8;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.18s ease, transform 0.12s ease;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+header a:hover,
+header a:focus {
+  color: #004fa3;
+  background-color: rgba(6, 102, 216, 0.06);
+  transform: translateY(-1px);
+}
+
+/* Welcome text (when user logged in) */
+header span {
+  margin-left: 6px;
+  font-weight: 700;
+  color: #111827;
+  background: linear-gradient(
+    90deg,
+    rgba(6, 102, 216, 0.08),
+    rgba(34, 197, 94, 0.03)
+  );
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+/* Main container padding + center layout */
+main {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 12px 16px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Default card-like wrapper used by Home/Login/Card inline elements */
+main > div[style],
+.container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(12, 20, 60, 0.04);
+}
+
+/* Generic button reset to make buttons consistent across pages */
+button {
+  font-family: inherit;
+  font-size: 0.98rem;
   border: none;
   cursor: pointer;
-  margin-top: 15px;
-  transition: background-color 0.3s;
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: all 0.16s ease;
 }
 
-.card-form button:hover {
-  background-color: #004d99;
+/* Primary / action button (used by links with buttons inside) */
+button.primary,
+a button {
+  background-color: #10b981; /* green */
+  color: #fff;
 }
 
-/* --- EXISTING BUSINESS CARD STYLES --- */
-.business-card {
-  width: 450px;
-  padding: 30px;
-  border-radius: 20px;
+button.primary:hover,
+a button:hover {
+  background-color: #0ea36f;
+  transform: translateY(-1px);
 }
 
-.name {
-  font-size: 2.5em;
-  margin-bottom: 0.1em;
+/* Secondary button style (links in nav etc.) */
+button.secondary {
+  background-color: #0077ff;
+  color: #fff;
 }
 
-.title {
-  font-size: 1.1em;
-  font-weight: 400;
-  margin-top: 0;
+button.secondary:hover {
+  background-color: #0066d6;
 }
 
-.dotted-rule {
+/* Forms inside main */
+main input[type="text"],
+main input[type="email"],
+main input[type="password"],
+main input[type="range"],
+main textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  font-size: 0.95rem;
+  outline: none;
+  transition: box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+main input[type="color"] {
+  width: 100px;
+  height: 20px;
+  padding: 0;
   border: none;
-  border-top: 3px dotted rgba(255, 255, 255, 0.5);
-  margin: 20px 0;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-.bottom-section {
+main input:focus,
+main textarea:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.08);
+}
+
+/* Sidebar (if present, like in Card component) */
+.sidebar {
+  width: 240px;
+  min-width: 220px;
+  padding: 12px;
+  border-right: 1px solid #f0f3f7;
+}
+
+/* Make the layout responsive: stack on small screens */
+@media (max-width: 900px) {
+  header nav {
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 12px;
+  }
+
+  main {
+    padding: 12px;
+    margin: 16px;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #f0f3f7;
+    margin-bottom: 12px;
+  }
+}
+
+/* Small helper utilities */
+.text-muted {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.center {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
 }
 
-.contact-info {
-  line-height: 1.4;
+/* Tiny form feedback color heuristics (keeps your inline red/green text readable) */
+.feedback {
+  font-weight: 600;
+  margin-top: 8px;
 }
 
-.contact-info p {
-  margin: 4px 0;
+.feedback.good {
+  color: #16a34a;
 }
 
-.skills-container {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.feedback.bad {
+  color: #dc2626;
 }
 
-.skill-row {
-  display: flex;
-  gap: 10px;
-}
-
-.skill-tag {
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 0.8em;
+/* Footer minimal */
+footer {
+  margin-top: 40px;
+  padding: 20px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
 }
